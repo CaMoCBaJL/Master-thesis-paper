@@ -1,0 +1,226 @@
+\begin{thebibliography}{10}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibAuthor\def\BibAuthor#1{\emph{#1}}\else\fi
+\ifx\undefined\BibTitle\def\BibTitle#1{#1}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\def\BibAnnote#1{}\else\fi
+\ifx\undefined\BibSection\def\BibSection#1#2#3{}\else\fi
+
+\bibitem{master1}
+\selectlanguageifdefined{english}
+\BibAuthor{Сармантаева,~Л.~С.} \BibTitle{Исследование технологий обучения
+  программированию в школе}~/ Л.~С. Сармантаева~// \emph{Проблемы и перспективы
+  развития образования в {Р}оссии.} "---
+\newblock 2012. "---
+\newblock no.~16.
+
+\bibitem{master2}
+\selectlanguageifdefined{english}
+\BibAuthor{Челнокова,~Е.~А.} \BibTitle{Робототехника в образовательной практике
+  школы}~/ Е.~А. Челнокова, А.~В. Хижная, Д.~А. Казначеев~// \emph{Проблемы
+  современного педагогического образования.} "---
+\newblock 2019. "---
+\newblock Vol.~1, no.~65.
+
+\bibitem{master3}
+\selectlanguageifdefined{english}
+\BibAuthor{Сенюшкин,~Н.~С.} \BibTitle{Изучение робототехники в школе - путь
+  интеграции в инженерное образование}~/ Н.~С. Сенюшкин~// \emph{Актуальные
+  проблемы авиации и космонавтики}. "---
+\newblock 2014. "---
+\newblock no.~10.
+
+\bibitem{master4}
+\selectlanguageifdefined{english}
+\BibAuthor{Брянцева,~Р.~Ф.} \BibTitle{Занимательная робототехника в современной
+  школе}~/ Р.~Ф. Брянцева~// \emph{Наука и перспективы}. "---
+\newblock 2018. "---
+\newblock no.~1.
+
+\bibitem{master5}
+\selectlanguageifdefined{english}
+\BibTitle{Образовательная робототехника: дайджест актуальных материалов}~/ Ed.
+  by Т.~Г. Попова. "---
+\newblock ГАОУ ДПО СО «ИРО», 2015.
+
+\bibitem{master6}
+\selectlanguageifdefined{english}
+\BibTitle{Оффициальный сайт {К}у{М}ир}. "---
+\newblock 2022. \BibUrl{https://www.niisi.ru/kumir/}.
+
+\bibitem{master7}
+\selectlanguageifdefined{english}
+\BibAuthor{Леонов,~А.~Г.} \BibTitle{Методика преподавания основ алгоритмизации
+  на базе системы «{КуМир}»}. "---
+\newblock 2009.
+
+\bibitem{master8}
+\selectlanguageifdefined{english}
+\BibAuthor{Кушниренко,~А.~Г.} \BibTitle{докл. {П}икто{М}ир: пропедевтика
+  алгоритмического языка (опыт обучения программированию старших
+  дошкольников)}~// Большой московский семинар по методике раннего обуч.
+  информатике (ИТО-РОИ-2012). "---
+\newblock M. "---
+\newblock Конгресс конференций ИТО-РОИ: 2012.
+
+\bibitem{master9}
+\selectlanguageifdefined{english}
+\BibAuthor{Леонов,~А.~Г.} \BibTitle{Переход от непосредственного управления
+  исполнителями к составлению программ в пропедевтическом курсе информатики}~//
+  Ярославский педагогический вестник. "---
+\newblock 3 no.~3. "---
+\newblock 2013.
+
+\bibitem{master10}
+\selectlanguageifdefined{english}
+\BibTitle{Исходный код среды исполнения КуМир}.
+  \BibUrl{https://github.com/a-a-maly/kumir2}.
+
+\bibitem{master11}
+\selectlanguageifdefined{english}
+\BibAuthor{Кушниренко,~А.~Г.} \BibTitle{Система программирования {К}у{M}ир
+  2.x}~/ А.~Г. Кушниренко, М.~А. Ройтберг, Д.~В. Хачко, В.~В. Яковлев~//
+  \emph{Труды НИИСИ}. "---
+\newblock 2015. "---
+\newblock Vol.~5, no.~1.
+
+\bibitem{master12}
+\selectlanguageifdefined{english}
+\BibTitle{Сборник тезисов конференции}~/ Ed. by В.~Л. Чёрный. "---
+\newblock МАКС Пресс, 2022. "---
+\newblock P.~208.
+
+\bibitem{master13}
+\selectlanguageifdefined{english}
+\BibTitle{Спецификация {ОГЭ}}. "---
+\newblock 2022.
+  \BibUrl{https://fipi.ru/oge/demoversii-specifikacii-kodifikatory\#!/tab/173801626-5}.
+
+\bibitem{master14}
+\selectlanguageifdefined{english}
+\BibTitle{Статистико-аналитический отчет о результатах государственной итоговой
+  аттестациипо образовательным программам основного общего образованияв 2022
+  году в {Ч}укотском автономном округе}. "---
+\newblock ФИОКО, 2022.
+
+\bibitem{master15}
+\selectlanguageifdefined{english}
+\BibTitle{Статистико-аналитический отчет о результатах государственной итоговой
+  аттестации по образовательным программам основного общего образования в 2022
+  году по {K}алиниградской области}. "---
+\newblock КОИРО, 2022.
+
+\bibitem{master16}
+\selectlanguageifdefined{english}
+\BibAuthor{Таммемяги,~Т.~Н.} \BibTitle{Статистико-аналитический отчет о
+  результатах государственной итоговой аттестации по образовательным программам
+  основного общего образования в 2019-2022 году по {Л}ениградской области}~/
+  Т.~Н. Таммемяги, С.~Б. Зеленина, Н.~Н. Яковлев. "---
+\newblock ГБУ ДПО «СПб ЦОКОиИТ», 2022.
+
+\bibitem{master17}
+\selectlanguageifdefined{english}
+\BibTitle{Утверждённая ДЕМО-версию ЕГЭ по информатике 2023}.
+  \BibUrl{https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2023/inf\_11\_2023.zip}.
+
+\bibitem{master18}
+\selectlanguageifdefined{english}
+\BibTitle{Список школьных учебников {ФГОС} на 2022-2023}. "---
+\newblock 2022.
+
+\bibitem{master19}
+\selectlanguageifdefined{english}
+\BibAuthor{Илькевич,~Б.~В.} \BibTitle{Формирование творческого инженерного
+  мышления в процессе обучения робототехнике}~/ Б.~В. Илькевич, К.~Б. Илькевич,
+  Т.~Г. Илькевич~// \emph{Ученые записки университета Лесгафта}. "---
+\newblock 2021. "---
+\newblock Vol.~3, no.~193.
+
+\bibitem{master20}
+\selectlanguageifdefined{english}
+\BibAuthor{Шабалин,~К.~В.} \BibTitle{Формирование креативных способностей
+  школьников при выполнении проектов на базе платформы {A}rduino}~/ К.~В.
+  Шабалин~// \emph{Педагогическое образование в России}. "---
+\newblock 2022. "---
+\newblock no.~2.
+
+\bibitem{master21}
+\selectlanguageifdefined{english}
+\BibAuthor{Филимонова,~Е.~В.} \BibTitle{Задачный подход к обучению
+  робототехнике с использованием среды trik studio в школьном курсе
+  информатики}~/ Е.~В. Филимонова~// \emph{Наука и школа}. "---
+\newblock 2020. "---
+\newblock no.~2.
+
+\bibitem{master22}
+\selectlanguageifdefined{english}
+\BibAuthor{Воронин,~И.~В.} \BibTitle{Использование программируемого робота
+  конструктора в образовательных целях}~/ И.~В. Воронин~// \emph{Ярославский
+  педагогический вестник}. "---
+\newblock 2013. "---
+\newblock no.~4.
+
+\bibitem{master23}
+\selectlanguageifdefined{english}
+\BibAuthor{Бешенков,~С.~А.} \BibTitle{Использование визуального
+  программирования и виртуальной среды при изучении элементов робототехники на
+  уроках технологии и информатики}~/ С.~А. Бешенков, М.~И. Шутикова, В.~Б.
+  Лабутин, В.~И. Филиппов~// \emph{Информатика и образование}. "---
+\newblock 2018. "---
+\newblock Vol.~5. "---
+\newblock Pp.~20--22.
+
+\bibitem{master24}
+\selectlanguageifdefined{english}
+\BibAuthor{Гордиевских,~В.~М.} \BibTitle{Микроконтроллеры {L}ego ev3 и
+  {A}rduino uno как технологическая основа для курса робототехники в вузе}~/
+  В.~М. Гордиевских~// \emph{Вестник Шадринского государственного
+  педагогического университета}. "---
+\newblock 2016. "---
+\newblock Vol.~31, no.~3.
+
+\bibitem{master25}
+\selectlanguageifdefined{english}
+\BibAuthor{Самарина,~А.~Е.} \BibTitle{Возможности конструктора «{S}cratchduino»
+  для обеспечения занятий по робототехнике на разных ступенях школы}~/ А.~Е.
+  Самарина~// \emph{Концепт}. "---
+\newblock 2016. "---
+\newblock no.~10.
+
+\bibitem{master26}
+\selectlanguageifdefined{english}
+\BibAuthor{Гейхман,~Л.~К.} \BibTitle{Образовательная робототехника в работе с
+  детьми дошкольного и младшего школьного возраста}~/ Л.~К. Гейхман~//
+  \emph{Вестник Пермского национального исследовательского политехнического
+  университета. Проблемы языкознания и педагогики.} "---
+\newblock 2015. "---
+\newblock no.~4.
+
+\bibitem{master27}
+\selectlanguageifdefined{english}
+\BibAuthor{Глазов,~С.~Ю.} \BibTitle{Возможности применения платформы {A}rduino
+  в учебном процессе педагогического вуза и общеобразовательных школ}~/ С.~Ю.
+  Глазов, А.~Н. Сергеев, В.~Л. Усольцев~// \emph{Известия ВГПУ}. "---
+\newblock 2021. "---
+\newblock Vol.~163, no.~10.
+
+\bibitem{master28}
+\selectlanguageifdefined{english}
+\BibAuthor{Серёгин,~М.~С.} \BibTitle{Использование платформы {A}rduino в
+  образовательной деятельности}~/ М.~С. Серёгин~// \emph{Инновационная наука}.
+  "---
+\newblock 2019. "---
+\newblock no.~6.
+
+\bibitem{master29}
+\selectlanguageifdefined{english}
+\BibAuthor{Леонов,~А.~Г.} \BibTitle{Тенденции объектно-ориентированного
+  программирования в разработке системы {К}у{М}ир}~/ А.~Г. Леонов~//
+  \emph{Программные продукты и системы}. "---
+\newblock 2012. "---
+\newblock no.~4.
+
+\end{thebibliography}
