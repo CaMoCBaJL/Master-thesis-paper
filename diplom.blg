@@ -5,42 +5,42 @@ The style file: gost780uv.bst
 Database file #1: refs.bib
 You've used 29 entries,
             2649 wiz_defined-function locations,
-            805 strings with 10806 characters,
-and the built_in function-call counts, 9859 in all, are:
-= -- 1343
+            811 strings with 10846 characters,
+and the built_in function-call counts, 10293 in all, are:
+= -- 1425
 > -- 174
-< -- 23
+< -- 24
 + -- 71
 - -- 42
-* -- 591
-:= -- 1183
-add.period$ -- 118
+* -- 618
+:= -- 1228
+add.period$ -- 120
 call.type$ -- 29
-change.case$ -- 24
+change.case$ -- 25
 chr.to.int$ -- 0
 cite$ -- 29
-duplicate$ -- 460
-empty$ -- 1013
-format.name$ -- 64
-if$ -- 2618
+duplicate$ -- 478
+empty$ -- 1046
+format.name$ -- 65
+if$ -- 2748
 int.to.chr$ -- 0
 int.to.str$ -- 29
 missing$ -- 0
-newline$ -- 195
-num.names$ -- 44
+newline$ -- 196
+num.names$ -- 45
 pop$ -- 170
 preamble$ -- 1
 purify$ -- 0
-quote$ -- 67
-skip$ -- 256
+quote$ -- 68
+skip$ -- 268
 stack$ -- 0
-substring$ -- 459
-swap$ -- 230
+substring$ -- 507
+swap$ -- 245
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 71
+while$ -- 77
 width$ -- 31
-write$ -- 522
+write$ -- 532
