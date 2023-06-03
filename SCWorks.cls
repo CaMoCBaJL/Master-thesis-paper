@@ -1,4 +1,4 @@
-\LoadClass[14pt]{extarticle}
+\LoadClass[12pt]{extarticle}
 %\RequirePackage[14pt]{extsizes}
 \RequirePackage[
   		a4paper, mag=1000,
@@ -710,7 +710,7 @@
 \noindent
 \CYRN\cyra\cyru\cyrch\cyrn\cyrery\cyrishrt\ \cyrr\cyru\cyrk\cyro\cyrv%
 \cyro\cyrd\cyri\cyrt\cyre\cyrl\cyrsftsn\\
-\signature{\@satitle}{\@saname}\\[14pt]
+\signature{\@satitle}{\@saname}\\[12pt]
 \CYRZ\cyra\cyrv\cyre\cyrd\cyru\cyryu\cyrshch\cyri\cyrishrt\ \cyrk\cyra%
 \cyrf\cyre\cyrd\cyrr\cyro\cyrishrt\\
 \signature{\@chtitle}{\@chname}
