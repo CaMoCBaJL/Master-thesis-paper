@@ -219,17 +219,18 @@ Docker - это свободное программное обеспечение, которое позволяет упаковывать, д
 \begin{itemize}[label = •, itemindent = 0.5cm]
 \item {IBM Rational Functional Tester[4] предоставляет функции автоматического тестирования для функционального, регрессионного тестирования, тестирования графических пользовательских интерфейсов и тестирования, ориентированного на данные. Данная программа не распространяется бесплатно, для использования необходимо приобрести лицензию;}
 \item {IBM Rational Test Workbench[5] так же распространяется по платной лицензией, с пробным периодом бесплатного использования в тридцать дней;}
-\item {система автоматизированного тестирования TestComplete[6], предоставляющая в том числе инструмент для регрессионного тестирования.}
+\item {система автоматизированного тестирования TestComplete[6], \\ предоставляющая в том числе инструмент для регрессионного тестирования.}
 \end{itemize}\par
 На этапе анализа существующего ПО для тестирования, было выяснено, что ни 1 из рассмотренных вариантов не сможет быть применен в виду чрезмерно объемного интерфейса, а также отсутствия бесплатной подписки. \par
 Транслятор из языка программирования КуМир в язык программирования С++ - разработка с открытыми исходными кодами. На данный момент, язык программирования КуМир поддерживает функциональный стиль программирования без создания пользовательских структур или классов.
  Ввиду наличия исходных кодов транслятора и ограниченности набора инструкций языка КуМир, было решено разработать автоматизированную тестовую среду с набором статических тестов.
  \subsection{Транслятор с языка КуМир в язык С++}
 Приложение разрабатывается на языке С++ с использованием фрейморвка QT 4 или 5 версии, а также системы автоматизации сборки программного кода CMake. Для сборки проекта на операционной системе Windows, требуется программа-сборщик MS Build 2012, устаревший на данный момент и труднодоступный для скачивания, поэтому было предпринято решение разрабатывать приложение на операционной системе Linux Mint. Для сборки проекта требуется установить ряд дополнительных библиотек, среди которых: ZLib, Boost и интерпретатор языка программирования Python.\par
-Проект состоит из ряда библиотек, используемых внутри проекта, в том числе - AST-дерево, библиотека для работы с низкоуровневой виртуальной машиной, библиотеки для рендеринга pdf-документoв, \dots; плагинов, а также исполнителей и сред разработки, состоящих из файлов с описанием использующихся методов, процедур и сущностей и файлов с описанием слоя представления данных частей. Ввиду большого объема приложения, высокого уровня связности  элементов друг с другом и устаревших библиотек, используемых для разработки, сборка проекта осуществляется при помощи командной строки. \par
+Проект состоит из ряда библиотек, используемых внутри проекта, в том числе - AST-дерево, библиотека для работы с низкоуровневой виртуальной машиной, библиотеки для рендеринга pdf-документoв и т.д.; плагинов, а также исполнителей и сред разработки, состоящих из файлов с описанием использующихся методов, процедур и сущностей и файлов с описанием слоя представления данных частей. Ввиду большого объема приложения, высокого уровня связности  элементов друг с другом и устаревших библиотек, используемых для разработки, сборка проекта осуществляется при помощи командной строки. \par
 В плагине kumirCodeGenerator осуществляется трансляция и компиляция программного кода с языка КуМир в язык низкоуровневой виртуальной машины. По имеющемуся файлу с исходным кодом происходят лексический и синтаксический анализы, в случае, если они завершились успешно и не было выявлено ошибок, трансляция продолжается. В результате лексического анализа имеется набор лексем кода исходного языка программирования, использующийся для синтаксического анализа. В результате синтаксического анализа программа создает набор токенов для генерации по ним дерева разбора. Вычисленное дерево разбора усекается до AST-дерева, для трансляции кода. На этом этапе происходит наращивание кода на выходном языке по имеющемуся дереву разбора. Описанные выше этапы осуществляются при помощи вызова функций сторонних модулей.\par
 Для разработки транслятора на основе измененного и переработанного программного кода плагина kumirCodeGenerator был создан модуль \\ arduinoCodeGenerator. Основные изменения затрагивают сущность Generator, содержащую основной объем операций по обработке данных AST-дерева и наращиванию программного кода по нему на выходном языке. \par
 Поскольку в изначальном варианте программный код транслировался в язык виртуальной низкоуровневой машины, был кардинально переработан список команд. Список команд для трансляции с языка программирования КуМир в язык программирования С++ приведен в таблице \hyperref[table-2]{2}.
+\newpage
 \begin{table}[hp!]
 	\centering
 	\small
@@ -277,7 +278,7 @@ Docker - это свободное программное обеспечение, которое позволяет упаковывать, д
 \hline
 	\end{tabular}
 \end{table}\par
-Были изменены инструкции для трансляции циклов, условий, вызова и объявления функций. Были добавлены инструкции для объявления переменных и констант. Блок операций подвергся минимальным изменениям --- были добавлены инструкции инкремента и декремента, а также оператор присваивания. \par
+Были изменены инструкции для трансляции циклов, условий, вызова и объявления функций. Были добавлены инструкции для объявления переменных и констант. Блок операций подвергся минимальным изменениям --- были добавлены инструкции инкремента и декремента и присваивания. \par
 Также изменилась основная сущность, используемая при трансляции --- сущность инструкции выходного языка. Были удалены поля для хранения данных о регистре, спецификации строки, спецификации модуля и были добавлены поля для хранения имени операнда и типы операнда, если присутствует.
 \paragraph{Трансляция циклов}\par
 Существует 4 типа циклов в языке программирования КуМир: стандартный для языков программирования высокого уровня цикл, выполняющийся некоторое количество раз, определяемое набором элементов в указанном диапазоне ``нц для``, цикл с предусловием ``нц пока``, цикл, выполняющийся n раз ``нц для n раз``, а также цикл, выполняющийся постоянно до остановки исполнения ``нц всегда``. При трансляции в низкоуровневый язык, этап трансляции циклов требовал одной инструкции --- ``LOOP``, а также тела операций, выполняющихся до данной метки. В начале транслировалось тело цикла, в случае цикла с предусловием до тела транслировалось условие исполнения, на последнем этапе трансляции добавлялась инструкция ``LOOP``, объявляющую метку завершения определения цикла. \par
@@ -296,9 +297,9 @@ Docker - это свободное программное обеспечение, которое позволяет упаковывать, д
 \section{Реализация системы тестирования}
 \subsection{Процесс тестирования} 
 Под тестированием компилятора понимается сборка транслятора из исходных кодов, трансляция тестовой программы и сравнение результатов работы транслятора с ожидаемым результатом. Было решено автоматизировать процесс тестирования, для повышения качества и снижения сложности процесса. \par
-Т.к. язык программирования и среда КуМир - кроссплатформенные проекты, в начале процесса автоматизации стоило решить вопрос с внешними условиями - операционной системой, набором используемых пакетов и библиотек, …, т.о. первым шагом к автоматизации тестирования явилось создание централизованной среды для сборки компилятора, а именно разработка dockerfile файла, содержащий набор инструкций для сборки транслятора из исходных кодов. В качестве операционной системы была выбрана Ubuntu, ввиду широкой распространенности, большого сообществу разработчиков и активной поддержке пакетов с данной системой в репозитории docker. \par
+Т.к. язык программирования и среда КуМир - кроссплатформенные проекты, в начале процесса автоматизации стоило решить вопрос с внешними условиями - операционной системой, набором используемых пакетов и библиотек, т.о. первым шагом к автоматизации тестирования явилось создание централизованной среды для сборки компилятора, а именно разработка dockerfile файла, содержащий набор инструкций для сборки транслятора из исходных кодов. В качестве операционной системы была выбрана Ubuntu, ввиду широкой распространенности, большого сообществу разработчиков и активной поддержке пакетов с данной системой в репозитории docker. \par
 Далее встал вопрос автоматизации запуска транслятора. Для решения этой проблемы был разработан скрипт на языке Python 3. \par
-Для автоматизации запуска тестовой системы в репозитории разрабатываемого транслятора были настроены службы автоматического запуска(Github Actions) при отправке изменений и создании запроса на внесение изменений в целевую ветвь. \par
+Для автоматизации запуска тестовой системы в репозитории разрабатываемого транслятора были настроены службы автоматического запуска(Github Actions) при отправке изменений и создании запроса на внесение изменений в целевую ветвь. Исходный код, используемый для инициализации системы тестов приведен в приложении А. \par
 
 \subsection{Тесты}
 Для тестирования были разработаны набор тестов, покрывающие основные инструкции языка программирования КуМир, а именно: работа с переменными(инициализация, присваивание), арифметические и логические выражения, ветвления, циклы, а также функции и процедуры. Тестирование построено на принципе сравнения ожидаемого результат с результатом работы транслятора. Тесты сгруппированы по подмножествам инструкций исходного языка.
@@ -325,7 +326,7 @@ instance"] - show app what translator instance to use.
  tests ended with compiler error.
 [-b] [--brief] - skip open log info about all tests.
 \end{Verbatim}
-Было решено разработать программу гибкой и информативной. Для работы необходимы 2 аргумента - –translator(путь к транслятору), а также –path-to-tests(путь к папке с тестами).
+Было решено разработать программу гибкой и информативной. Для работы необходимы 2 аргумента - –translator(путь к транслятору), а также –path-to-tests(путь к папке с тестами). Исходный код скрипта для тестирования приведен в приложении Б.
 По умолчанию результат тестирования записывается в файл, также есть возможность продублировать вывод в консоль. Существует 4 состояния, отражающие результат работы компилятора:
 \begin{enumerate}
 \item успех;
@@ -337,6 +338,14 @@ instance"] - show app what translator instance to use.
 \image{0.5}{Пример сообщения с возможностью подробно посмотреть результаты тестирования}
 В начале вывода информации приведена краткая статистика - сколько тестов завершилось и с каким состоянием. Объем вывода можно фильтровать и убирать подробную информацию о сообщениях в состояниях 1-4, либо полностью отключить подробный вывод информации, добавив флаг -b. При дублировании вывода в консоль, в зависимости от состояния, сообщение будет выделено цветом. Пример краткого вывода по результатам тестирования приведен на рисунке 4. 
 \image{1}{Пример краткого вывода по окончанию тестирования}
+На данный момент, система тестирования демонстрирует следующие результаты:
+\begin{enumerate}
+\item 3 теста завершились успешно;
+\item 23 теста провалились;
+\item во время запуска 1 теста произошла ошибка компиляции;
+\item во время запуска 1 теста не был найден файл с ожиданиями. 
+\end{enumerate}\par
+Полученные результаты демонстрируют большой процент неточностей в работе разработанного транслятора. Найденные ошибки в работе необходимо исправить.
 \conclusion
 
 В ходе тестирования разработанного транслятора с языка программирования КуМир в язык программирования С++ был выявлен ряд ошибок. Автоматизация процесса тестирования позволяет быстро расширять список тестов и увеличивать процент покрытия, влияющий на надежность и безотказность работы транслятора. Создание тестовых случаев позитивно сказывается на процессе разработки, ведь тестовые сценарии являются документацией. 
@@ -371,5 +380,483 @@ sredaprogrammirovaniya-kumir
 %\bibliographystyle{gost780uv}
 
 %\bibliography{refs}
+\appendix
+\section{Исходный код dockerfile, унифицирующий настройки среды запуска системы тестирования}
+\begin{Verbatim}[fontsize=\small, numbers=left]
+FROM ubuntu
 
+ARG path_to_tests_folder="./Tests"
+
+LABEL EMAIL=gorka19800@gmail.com
+
+#install all the necessary libs and apps
+RUN apt-get update
+RUN apt-get dist-upgrade -y
+RUN echo "8"| apt-get install -y qttools5-dev-tools
+RUN apt-get install -y git python3 cmake qtbase5-dev g++ libqt5svg5-dev
+ libqt5x11extras5-dev qtscript5-dev libboost-system-dev zlib1g zlib1g-dev
+#setup git
+RUN git config --global user.email "gorka19800@gmail.com"
+RUN git config --global user.name "Test suit"
+#clone repo and prepare for building kumir-to-arduino translator
+RUN mkdir /home/Sources
+WORKDIR /home/Sources/
+RUN git clone https://github.com/CaMoCBaJL/kumir2
+WORKDIR kumir2/
+RUN git pull
+RUN git checkout translator_tests
+RUN git merge -s ours --no-edit origin/ArduinoFixes
+RUN mkdir build
+WORKDIR build/
+#build translator
+RUN cmake -DUSE_QT=5 -DCMAKE_BUILD_TYPE=Release ..
+RUN make -j 18
+#start tests
+WORKDIR ../kumir_tests/
+RUN touch test_results.log
+RUN python3 test_script.py -d -o ./test_results.log
+-tr ../build/bin/kumir2-arduino -t \$path_to_tests_folder
+\end{Verbatim}
+\section{Исходный код скрипта, производящего тестирование транслятора}
+\begin{Verbatim}[fontsize=\small, numbers=left]
+import os
+import sys
+import subprocess
+
+#constants
+class CONSOLE_BG_COLORS:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+class TEST_RESULT_STATE:
+    COMPLETED = 1
+    MISSING_EXPECTATION = 2
+    COMPILER_ERROR_HAPPEND = 3
+    FAILED = -1
+    NONE = 0
+
+COMPILER_ERROR_LABEL = "ERROR!"
+
+EXPECTATION_FILE_EXTENTION = ".exp"
+SOURCE_FILE_EXTENTION = ".kum"
+
+CONTROL_CHARACTERS = ["\n", "\r", "\t", " "]
+BYTES_TO_READ_COUNT = 1024
+CHAR_THRESHOLD = 0.3
+TEXT_CHARACTERS = ''.join(
+    [chr(code) for code in range(32, 127)] +
+    list('\b\f\n\r\t')
+)
+BINARY_CHAR_EXAMPLE = '\x00'
+
+TESTS_FOLDER_NAME = "Tests"
+
+ARGS = {"help": ["-h", "--help"],
+        "translator": ["-tr", "--translator"],
+        "output": ["-o", "--output"],
+        "duplicate": ["-d", "--duplicate"],
+        "skip-successfull": ["-ss", "--skip-successfull"],
+        "skip-failed": ["-sf", "--skip-failed"],
+        "skip-without-expectation": ["-swe", "--skip-without-expectation"],
+        "skip-with-compiler-error": ["-sce", "--skip-with-compiler-error"],
+        "brief": ["-b", "--brief"],
+        "path-to-tests": ["-t", "path-to-tests"]
+        }
+
+ERRORS = {
+    "wrong input": "Wrong args input - you should type path to file after -c or
+     -o flags!",
+    "file not exist": "File doesn't exist!",
+    "wrong file extention": "File extention for translator is not correct! It should
+     be a bin-file.",
+    "no path to tests": "Wrong args input - you should type path to tests folder
+     after -t flag!"
+}
+
+#data structure to store test results
+class TestResult:
+
+    __text_color = CONSOLE_BG_COLORS.OKGREEN
+    __header_text = ""
+    SKIPPED_TEST_TYPES = [TEST_RESULT_STATE.NONE]
+
+    def __init__(self, name: str, source: str, expectation: str, result: str):
+        self.name = name
+        self.source_file_name = source
+        self.expectation_file_name = expectation
+        self.resultFileName = result
+        self.state = TEST_RESULT_STATE.NONE
+
+    def __str__(self):
+        self.__setup_output()
+        additional_test_data = f'''
+        Test group expectations: {self.expectation_file_name}
+        Test group results: {self.resultFileName}. 
+        To get more detail info about comparison results, print:
+        vimdiff {self.source_file_name} {self.expectation_file_name}
+         {self.resultFileName}
+        or vimdiff {self.expectation_file_name} {self.resultFileName}
+        {CONSOLE_BG_COLORS.ENDC}
+        '''
+        return f'''{self.__text_color}
+        Test {self.name}.
+        {self.__header_text}
+        Sources for the test: {self.source_file_name}
+        {additional_test_data if self.state is TEST_RESULT_STATE.COMPLETED
+         or self.state is TEST_RESULT_STATE.FAILED else ""}
+        '''
+
+    def __setup_output(self):
+        if self.state == TEST_RESULT_STATE.COMPLETED:
+            self.__text_color = CONSOLE_BG_COLORS.OKGREEN
+            self.__header_text = "Congratulations! Test completed successfully!"
+        elif self.state == TEST_RESULT_STATE.MISSING_EXPECTATION:
+            self.__text_color = CONSOLE_BG_COLORS.OKCYAN
+            self.__header_text = "Oh! Test didn't complete: no expectation"
+        elif self.state == TEST_RESULT_STATE.COMPILER_ERROR_HAPPEND:
+            self.__text_color = CONSOLE_BG_COLORS.WARNING
+            self.__header_text = "Oh! Test didn't complete: compiler error"
+        elif self.state == TEST_RESULT_STATE.FAILED:
+            self.__text_color = CONSOLE_BG_COLORS.FAIL
+            self.__header_text = "Sorry, but test failed..."
+
+class TestSection:
+
+    def __init__(self, section_name) -> None:
+        self.name = section_name
+        self.test_results = []
+    
+    def __str__(self) -> str:
+        columns, _ = os.get_terminal_size()
+        if (len(self.test_results) > 0):
+            return f"""
+            {CONSOLE_BG_COLORS.WARNING + "-" *columns + CONSOLE_BG_COLORS.ENDC}
+            Test section {self.name} starts here:
+            {os.linesep.join(list(map(lambda test_result: str(test_result),
+             self.test_results)))}
+            End of {self.name} section tests
+            {CONSOLE_BG_COLORS.WARNING + "-" *columns + CONSOLE_BG_COLORS.ENDC}
+            """
+        
+        return ''
+
+#functions
+def remove_control_characters(data_array):
+    result = []
+    for i in data_array:
+        for cc in CONTROL_CHARACTERS:
+            i = i.replace(cc, "")
+
+        if i:
+            result.append(i)
+
+    return result
+
+def get_file_data(filename):
+    if not os.path.exists(filename):
+        return ''
+    file = open(filename, "r")
+    result = file.readlines()
+    file.close()
+    return result
+
+def has_errors(text):
+    return COMPILER_ERROR_LABEL in text
+
+def process_sources(source_filename, path_to_translator):
+    path, _ = os.path.splitext(source_filename)
+    result_filename = path + ".kumir.c"
+
+    #call kumir2-arduino with params: 
+    --out="path_to_cwd/results/test_name.kumir.c" -s ./test_name.kum
+    popen = subprocess.Popen([path_to_translator,
+                              f'--out={result_filename}',
+                              '-s',
+                              source_filename],
+                             stdout=subprocess.PIPE)
+    popen.wait()
+    popen.stdout.read()
+
+    return result_filename
+
+def compare_data(expected_data, processed_data) -> TEST_RESULT_STATE:
+    result_without_kumir_ref = remove_control_characters(processed_data[2:])
+    expected_data = remove_control_characters(expected_data)
+
+    if (has_errors(result_without_kumir_ref)):
+        return TEST_RESULT_STATE.COMPILER_ERROR_HAPPEND
+
+    for i in range(len(result_without_kumir_ref)):
+        if result_without_kumir_ref[i] != expected_data[i]:
+            return TEST_RESULT_STATE.FAILED
+
+    return TEST_RESULT_STATE.COMPLETED
+
+def get_test_result_type_counters(test_sections):
+    counters = {
+        TEST_RESULT_STATE.COMPLETED: 0,
+        TEST_RESULT_STATE.FAILED: 0,
+        TEST_RESULT_STATE.COMPILER_ERROR_HAPPEND: 0,
+        TEST_RESULT_STATE.MISSING_EXPECTATION: 0,
+    }
+
+    for test_section in test_sections:
+        for test_result in test_section.test_results:
+            counters[test_result.state] += 1
+
+
+    return counters
+
+#log comparison results to file
+def log_test_results(logs_filename, data_to_log: TestSection, log_to_console):
+    result_type_counters = get_test_result_type_counters(data_to_log)
+    completed_tests_count, failed_tests_count,
+     compiler_error_happend_tests_count, 
+     missing_expectations_tests_count = \
+    [result_type_counters[k] for k in result_type_counters]
+
+    log_data = []
+    for test_section in data_to_log:
+        test_section.test_results = list(filter
+        (lambda test_result: test_result.state not in 
+        TestResult.SKIPPED_TEST_TYPES, test_section.test_results))
+        log_data.append(test_section)
+
+    log_data_strings = list(map(lambda x: str(x), log_data))
+    log_data_strings.insert(0, f'''
+    There were found: {len(log_data)} tests.
+    {CONSOLE_BG_COLORS.OKGREEN} Completed: 
+    {completed_tests_count} {CONSOLE_BG_COLORS.ENDC}
+    {CONSOLE_BG_COLORS.FAIL} Failed: 
+    {failed_tests_count} {CONSOLE_BG_COLORS.ENDC}
+    {CONSOLE_BG_COLORS.WARNING} With compiler error happend:
+     {compiler_error_happend_tests_count} {CONSOLE_BG_COLORS.ENDC}
+    {CONSOLE_BG_COLORS.OKCYAN} Missed expectation file: 
+    {missing_expectations_tests_count} {CONSOLE_BG_COLORS.ENDC}''')
+
+    if not os.path.exists(logs_filename):
+        open(logs_filename, "a").close()
+
+    log_file = open(logs_filename, "a")
+    log_file.writelines(log_data_strings)
+    log_file.close()
+
+    if log_to_console:
+        print(f"{os.linesep}".join(log_data_strings))
+
+def is_binary_file(filename):
+    file_stream = open(filename, 'rb')
+    file_content = file_stream.read(BYTES_TO_READ_COUNT)
+    file_stream.close()
+    
+    if not len(file_content):
+        #file is empty, nothing to read
+        return False
+    
+    if ord(BINARY_CHAR_EXAMPLE) in file_content:
+        #file contains binary symbols
+        return True
+    
+    binary_chars = file_content.translate(TEXT_CHARACTERS)
+    return float(len(binary_chars)) / len(file_content) > CHAR_THRESHOLD
+
+def validate_file_name(filename: str, is_log_file: bool):   
+    if not os.path.exists(filename):
+        print(filename + ERRORS.get("file not exist"))
+        sys.exit(2)
+    if not os.path.isfile(filename):
+        print(ERRORS.get("wrong input"))
+        sys.exit(2)
+    if not is_log_file and not is_binary_file(filename):
+        print(ERRORS.get("wrong file extention"))
+        sys.exit(2)
+        
+def show_help():
+    print(""" kumir2-arduino tester.
+    Description:
+    Approach of this app is to debug the work of kumir2 
+    to arduino translator. It uses compiled translator's 
+    instance, pre-builded locally on PC.
+    To start the work you should input path to compiler 
+    and path to logs file.
+    Flags:
+    [-h] [--help] - show help.
+    
+    [-tr] [--translator] ["the path to pre-builded kumir2 
+    to arduino translator instance"] - show app what 
+    translator instance to use.
+    
+    [-t] [--path-to-tests] ["the path to tests folder"] = 
+    show app  the folder with test files.
+    
+    [-o] [--output] ["the path to log file"] - show app 
+    where to store test logs.
+    
+    [-d] [--duplicate] - duplicate output to console.
+
+    [-ss] [--skip-successfull] - skip open log info about 
+    succesfully completed tests.
+
+    [-sf] [--skip-failed] - skip open log info about failed tests.
+
+    [-swe] [--skip-without-expectation] - skip open log info 
+    about tests for which the file with expectations 
+    was not found.
+
+    [-sce] [--skip-with-compiler-error] - skip open log info 
+    about tests ended with compiler error.
+
+    [-b] [--brief] - skip open log info about all tests.
+    """)
+
+def process_args():
+    result = ["", "", False, ""]
+    if ARGS["help"][0] in sys.argv or ARGS["help"][1] 
+    in sys.argv:
+        show_help()
+        sys.exit(2)
+
+    if ARGS["skip-successfull"][0] in sys.argv or ARGS["
+    skip-successfull"][1] in sys.argv: 
+        TestResult.SKIPPED_TEST_TYPES.append(
+        TEST_RESULT_STATE.COMPLETED)
+    
+    if ARGS["skip-without-expectation"][0] in sys.argv 
+    or ARGS["skip-without-expectation"][1] in sys.argv: 
+        TestResult.SKIPPED_TEST_TYPES.append(TEST_RESULT_STATE
+        .MISSING_EXPECTATION)
+
+    if ARGS["skip-with-compiler-error"][0] in sys.argv or
+     ARGS["skip-with-compiler-error"][1] in sys.argv: 
+        TestResult.SKIPPED_TEST_TYPES.append(TEST_RESULT
+        _STATE.COMPILER_ERROR_HAPPEND)
+
+    if ARGS["skip-failed"][0] in sys.argv or ARGS[
+    "skip-failed"][1] in sys.argv: 
+        TestResult.SKIPPED_TEST_TYPES.append(
+        TEST_RESULT_STATE.FAILED)
+
+    if ARGS["brief"][0] in sys.argv or ARGS["brief"][1] in sys.argv: 
+        TestResult.SKIPPED_TEST_TYPES = [
+            TEST_RESULT_STATE.COMPILER_ERROR_HAPPEND, 
+            TEST_RESULT_STATE.COMPLETED, 
+            TEST_RESULT_STATE.FAILED,
+            TEST_RESULT_STATE.MISSING_EXPECTATION
+            ]
+
+    args = sys.argv[1:]
+    for i in range(1, len(args)):
+        if args[i - 1] in ARGS["translator"] or args[i - 1]
+         in ARGS["output"] or args[i - 1] in ARGS
+         ["path-to-tests"]:
+            if (os.path.isfile(args[i])):
+                validate_file_name(args[i], False if args[i - 1]
+                 in ARGS["translator"] else True)
+
+            if args[i - 1] in ARGS["translator"]:
+                result[0] = os.path.abspath(args[i])
+            elif args[i - 1] in ARGS["output"]: 
+                result[1] = os.path.abspath(args[i])
+            elif args[i - 1] in ARGS["path-to-tests"]:
+                result[3] = os.path.abspath(args[i])
+        elif args[i-1] in ARGS["duplicate"]:              
+            result[2] = True
+            
+    return result
+
+def get_files_with_absolute_paths(folder_name):
+    path_to_folder = os.path.join(os.getcwd(), folder_name)
+    files = 
+    list(map(lambda x: os.path.join(path_to_folder, x),
+     os.listdir(path=path_to_folder)))
+    files.sort()
+
+    return files
+
+def get_source_and_expectation(dir_files):
+    sources = []
+    expectations = []
+    for file in dir_files:
+        if (os.path.isfile(file)):
+            ext = os.path.splitext(file)[1]
+            if (ext == EXPECTATION_FILE_EXTENTION):
+                expectations.append(file)
+            elif (ext == SOURCE_FILE_EXTENTION):
+                sources.append(file)
+    
+    return [sources, expectations]
+
+def get_folder_contents_full_paths(path_to_folder):
+    return list(
+        map(
+            lambda x: os.path.join(os.sep, path_to_folder, x),
+            os.listdir(path_to_folder)
+            )
+        )
+
+def calculate_test_sections(path_to_tests_folder):
+    result = []
+    test_folder_paths = get_folder_contents_full
+    _paths(path_to_tests_folder)
+    for test_folder_path in test_folder_paths:
+        if os.path.isfile(test_folder_path):
+            continue
+
+        result.append(TestSection(test_folder_path.
+        split(os.sep)[-1]))
+        test_paths = get_folder_contents_full_paths
+        (test_folder_path)
+        for test_dir_path in test_paths:
+            source_files, expectation_files =
+          get_source_and_expectation(get_folder_contents_full_paths
+            (test_dir_path))
+            if os.path.isfile(test_dir_path) or len
+            (expectation_files) > 1 or len(source_files)
+             < 1:
+                continue
+            
+            result[-1].test_results.append(TestResult(
+                test_dir_path.split(os.sep)[-1],
+                source_files[0],
+                "", ""
+                )
+            )
+
+            if len(expectation_files) == 1:
+                result[-1].test_results[-1]
+         .expectation_file_name  = expectation_files[0]
+                result[-1].test_results[-1].resultFileName
+                 = process_sources(source_files[0],
+                  args_data[0])
+                result_data = get_file_data(result[-1]
+               
+                .test_results[-1].resultFileName)
+                expected_data =
+     get_file_data(result[-1].test_results[-1].expectation_file_name)
+                result[-1].test_results[-1].state 
+                = compare_data(expected_data, result_data)
+            else: 
+                result[-1].test_results[-1].state = 
+                TEST_RESULT_STATE.MISSING_EXPECTATION
+
+    return result
+
+if __name__=="__main__":
+    args_data = process_args()
+
+    if not args_data[3]:
+        print("Didn't find any test to execute. Shutting down.")       
+        sys.exit()
+
+    test_results = calculate_test_sections(args_data[3])
+
+    log_test_results(args_data[1], test_results, args_data[2])
+\end{Verbatim}
 \end{document}

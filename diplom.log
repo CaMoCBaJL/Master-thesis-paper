@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.7)  3 JUN 2023 14:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.7)  5 JUN 2023 18:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1836,7 +1836,13 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
+)
+Overfull \hbox (3.73192pt too wide) in paragraph at lines 20--20
+ [] |\T2A/Tempora-TLF/m/n/14.4 Приложение Б [][]Ис-ход-ный код скрип-та, про-из
+-во-дя-ще-го те-сти-ро-ва-ние транс- 
+ []
+
+)
 \tf@toc=\write5
 \openout5 = `diplom.toc'.
 
@@ -1847,15 +1853,14 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ]
 LaTeX Font Info:    Trying to load font information for TS1+Tempora-TLF on inpu
 t line 186.
-
-(/usr/share/texlive/texmf-dist/tex/latex/tempora/TS1Tempora-TLF.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/tempora/TS1Tempora-TLF.fd
 File: TS1Tempora-TLF.fd 2016/02/02 (autoinst) Font definitions for TS1/Tempora-
 TLF.
 )
 LaTeX Font Info:    Font shape `TS1/Tempora-TLF/m/n' will be
 (Font)              scaled to size 14.4pt on input line 186.
- [4]
-[5
+
+[4] [5
 
 ]
 Overfull \hbox (0.14462pt too wide) in paragraph at lines 203--204
@@ -1863,62 +1868,56 @@ Overfull \hbox (0.14462pt too wide) in paragraph at lines 203--204
 ние спе-ци-аль-ных средств
  []
 
-[6] [7]
-Overfull \hbox (3.0217pt too wide) in paragraph at lines 222--223
-[]\T2A/Tempora-TLF/m/n/14.4 система ав-то-ма-ти-зи-ро-ван-но-го те-сти-ро-ва-ни
-я TestComplete[6], предо-став-
- []
-
-[8] [9]
+[6] [7] [8] [9] [10]
 LaTeX Font Info:    Font shape `T2A/Tempora-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 235.
- [10] [11] [12] [13] [14] [15
+(Font)              scaled to size 12.0pt on input line 236.
+ [11] [12] [13] [14] [15
 
 ]
-<1.png, id=136, 305.14pt x 173.64874pt>
+<1.png, id=151, 305.14pt x 173.64874pt>
 File: 1.png Graphic file (type png)
 <use 1.png>
-Package pdftex.def Info: 1.png  used on input line 305.
+Package pdftex.def Info: 1.png  used on input line 306.
 (pdftex.def)             Requested size: 305.13924pt x 173.64832pt.
-<2.png, id=138, 340.27126pt x 219.82124pt>
+<2.png, id=153, 340.27126pt x 219.82124pt>
 File: 2.png Graphic file (type png)
 <use 2.png>
-Package pdftex.def Info: 2.png  used on input line 307.
+Package pdftex.def Info: 2.png  used on input line 308.
 (pdftex.def)             Requested size: 340.27042pt x 219.8207pt.
  [16 <./1.png> <./2.png>]
-Overfull \hbox (14.61263pt too wide) in paragraph at lines 311--312
+Overfull \hbox (14.61263pt too wide) in paragraph at lines 312--313
 []\T2A/Tempora-TLF/m/n/14.4 Для ав-то-ма-ти-за-ции те-сти-ро-ва-ния бы-ло раз-р
 а-бо-та-но кон-соль-ное приложение-
  []
 
 LaTeX Font Info:    Trying to load font information for T2A+cmtt on input line 
-312.
+313.
 (/usr/share/texlive/texmf-dist/tex/latex/cyrillic/t2acmtt.fd
 File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 )
 LaTeX Font Info:    Font shape `T2A/Tempora-TLF/m/n' will be
-(Font)              scaled to size 6.0pt on input line 313.
+(Font)              scaled to size 6.0pt on input line 314.
  [17]
-<3.png, id=153, 923.45pt x 192.72pt>
+<3.png, id=165, 923.45pt x 192.72pt>
 File: 3.png Graphic file (type png)
 <use 3.png>
-Package pdftex.def Info: 3.png  used on input line 337.
+Package pdftex.def Info: 3.png  used on input line 338.
 (pdftex.def)             Requested size: 461.72386pt x 96.35976pt.
-<4.png, id=154, 441.65pt x 109.40875pt>
+<4.png, id=166, 441.65pt x 109.40875pt>
 File: 4.png Graphic file (type png)
 <use 4.png>
-Package pdftex.def Info: 4.png  used on input line 339.
+Package pdftex.def Info: 4.png  used on input line 340.
 (pdftex.def)             Requested size: 441.64891pt x 109.40846pt.
  [18 <./3.png>] [19 <./4.png>] [20
 
 ] [21]
-Underfull \hbox (badness 2035) in paragraph at lines 365--366
+Underfull \hbox (badness 2035) in paragraph at lines 374--375
 []\T2A/Tempora-TLF/m/n/14.4 Репозиторий с ис-ход-ным ко-дом транс-ля-то-ра [Эле
 к-трон-ный ре-сурс]
  []
 
 
-Underfull \hbox (badness 1033) in paragraph at lines 366--367
+Underfull \hbox (badness 1033) in paragraph at lines 375--376
 \T2A/Tempora-TLF/m/n/14.4 берг , Д.В.Хачко, В. В. Яко-влев [Элек-трон-ный ре-су
 рс] URL:$\OML/cmm/m/it/14.4 http \OT1/cmr/m/n/14.4 :
  []
@@ -1929,48 +1928,61 @@ pdfTeX warning (ext4): destination with the same identifier (name{cite.Ione}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.375 \end{document}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{cite.Ione}) has been already used, duplicate ignored
+l.384 ...ройки среды запуска системы тестирования}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{cite.Ione}) has been already used, duplica
+te ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.375 \end{document}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{cite.Ione}) has been already used, duplicate ignored
+l.384 ...ройки среды запуска системы тестирования}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{cite.Ione}) has been already used, duplica
+te ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.375 \end{document}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{cite.Ione}) has been already used, duplicate ignored
+l.384 ...ройки среды запуска системы тестирования}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{cite.Ione}) has been already used, duplica
+te ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.375 \end{document}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{cite.Ione}) has been already used, duplicate ignored
+l.384 ...ройки среды запуска системы тестирования}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{cite.Ione}) has been already used, duplica
+te ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.375 \end{document}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{cite.Ione}) has been already used, duplicate ignored
+l.384 ...ройки среды запуска системы тестирования}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{cite.Ione}) has been already used, duplica
+te ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.375 \end{document}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{cite.Ione}) has been already used, duplicate ignored
+l.384 ...ройки среды запуска системы тестирования}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{cite.Ione}) has been already used, duplica
+te ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.375 \end{document}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{cite.Ione}) has been already used, duplicate ignored
+l.384 ...ройки среды запуска системы тестирования}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{cite.Ione}) has been already used, duplica
+te ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.375 \end{document}
-                    pdfTeX warning (ext4): destination with the same identifier
- (name{cite.Ione}) has been already used, duplicate ignored
+l.384 ...ройки среды запуска системы тестирования}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{cite.Ione}) has been already used, duplica
+te ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.375 \end{document}
-                    ] (./diplom.aux)
+l.384 ...ройки среды запуска системы тестирования}
+                                                  ] [23
+
+] [24] [25
+
+] [26]
+[27] [28] [29] [30] [31] [32] [33] [34] [35] [36] [37] [38] (./diplom.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -1978,16 +1990,16 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `diplom.out' has not changed.
-(rerunfilecheck)             Checksum: 774E1CEF810D00EF5C62481AE9EC09F4;2380.
+(rerunfilecheck)             Checksum: 8111BD9551928A16AF0617C5E65BDB59;3578.
  ) 
 Here is how much of TeX's memory you used:
- 19127 strings out of 478287
- 300542 string characters out of 5849290
- 590151 words of memory out of 5000000
- 36918 multiletter control sequences out of 15000+600000
+ 19154 strings out of 478287
+ 300750 string characters out of 5849290
+ 592151 words of memory out of 5000000
+ 36923 multiletter control sequences out of 15000+600000
  491702 words of font info for 67 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 70i,9n,77p,1312b,518s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 70i,8n,77p,1312b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/anton/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/latt1200.600pk
 >{/usr/share/texlive/texmf-dist/fonts/enc/dvips/tempora/tmp_ac5xuc.enc}{/usr/sh
 are/texlive/texmf-dist/fonts/enc/dvips/tempora/t2a-tempora.enc}</usr/share/texl
@@ -1997,10 +2009,10 @@ exmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/typ
 e1/public/amsfonts/cm/cmr12.pfb>
-Output written on diplom.pdf (22 pages, 214477 bytes).
+Output written on diplom.pdf (38 pages, 248350 bytes).
 PDF statistics:
- 256 PDF objects out of 1000 (max. 8388607)
- 179 compressed objects within 2 object streams
- 47 named destinations out of 1000 (max. 500000)
- 125 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 404 PDF objects out of 1000 (max. 8388607)
+ 252 compressed objects within 3 object streams
+ 69 named destinations out of 1000 (max. 500000)
+ 141 words of extra memory for PDF output out of 10000 (max. 10000000)
 
