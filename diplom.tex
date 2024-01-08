@@ -432,482 +432,349 @@ Arduino --- комплекс аппаратно-программных средств с открытым исходным кодом, об
 
 %\bibliography{refs}
 \appendix
-\section{Исходный код dockerfile, унифицирующий настройки среды запуска системы тестирования}
+\section{Исходный код плагина, интегрирующего Arduino-cli в проект}
 \begin{Verbatim}[fontsize=\small, numbers=left]
-FROM ubuntu
+#include <QPainter>
+#include <QPen>
+#include <QDebug>
 
-ARG path_to_tests_folder="./Tests"
+#include "check_item.h"
+#include "ui_check_item.h"
 
-LABEL EMAIL=gorka19800@gmail.com
-
-#install all the necessary libs and apps
-RUN apt-get update
-RUN apt-get dist-upgrade -y
-RUN echo "8"| apt-get install -y qttools5-dev-tools
-RUN apt-get install -y git python3 cmake qtbase5-dev g++ libqt5svg5-dev
- libqt5x11extras5-dev qtscript5-dev libboost-system-dev zlib1g zlib1g-dev
-#setup git
-RUN git config --global user.email "gorka19800@gmail.com"
-RUN git config --global user.name "Test suit"
-#clone repo and prepare for building kumir-to-arduino translator
-RUN mkdir /home/Sources
-WORKDIR /home/Sources/
-RUN git clone https://github.com/CaMoCBaJL/kumir2
-WORKDIR kumir2/
-RUN git pull
-RUN git checkout translator_tests
-RUN git merge -s ours --no-edit origin/ArduinoFixes
-RUN mkdir build
-WORKDIR build/
-#build translator
-RUN cmake -DUSE_QT=5 -DCMAKE_BUILD_TYPE=Release ..
-RUN make -j 18
-#start tests
-WORKDIR ../kumir_tests/
-RUN touch test_results.log
-RUN python3 test_script.py -d -o ./test_results.log
--tr ../build/bin/kumir2-arduino -t \$path_to_tests_folder
-\end{Verbatim}
-\section{Исходный код скрипта, производящего тестирование транслятора}
-\begin{Verbatim}[fontsize=\small, numbers=left]
-import os
-import sys
-import subprocess
-
-#constants
-class CONSOLE_BG_COLORS:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-class TEST_RESULT_STATE:
-    COMPLETED = 1
-    MISSING_EXPECTATION = 2
-    COMPILER_ERROR_HAPPEND = 3
-    FAILED = -1
-    NONE = 0
-
-COMPILER_ERROR_LABEL = "ERROR!"
-
-EXPECTATION_FILE_EXTENTION = ".exp"
-SOURCE_FILE_EXTENTION = ".kum"
-
-CONTROL_CHARACTERS = ["\n", "\r", "\t", " "]
-BYTES_TO_READ_COUNT = 1024
-CHAR_THRESHOLD = 0.3
-TEXT_CHARACTERS = ''.join(
-    [chr(code) for code in range(32, 127)] +
-    list('\b\f\n\r\t')
-)
-BINARY_CHAR_EXAMPLE = '\x00'
-
-TESTS_FOLDER_NAME = "Tests"
-
-ARGS = {"help": ["-h", "--help"],
-        "translator": ["-tr", "--translator"],
-        "output": ["-o", "--output"],
-        "duplicate": ["-d", "--duplicate"],
-        "skip-successfull": ["-ss", "--skip-successfull"],
-        "skip-failed": ["-sf", "--skip-failed"],
-        "skip-without-expectation": ["-swe", "--skip-without-expectation"],
-        "skip-with-compiler-error": ["-sce", "--skip-with-compiler-error"],
-        "brief": ["-b", "--brief"],
-        "path-to-tests": ["-t", "path-to-tests"]
-        }
-
-ERRORS = {
-    "wrong input": "Wrong args input - you should type path to file after -c or
-     -o flags!",
-    "file not exist": "File doesn't exist!",
-    "wrong file extention": "File extention for translator is not correct! It should
-     be a bin-file.",
-    "no path to tests": "Wrong args input - you should type path to tests folder
-     after -t flag!"
+CheckItemWidget::CheckItemWidget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::check_item)
+{
+    ui->setupUi(this);
 }
 
-#data structure to store test results
-class TestResult:
+void CheckItemWidget::setLabelText(QString labelText) {
+    ui ->label->setText(labelText);
+}
 
-    __text_color = CONSOLE_BG_COLORS.OKGREEN
-    __header_text = ""
-    SKIPPED_TEST_TYPES = [TEST_RESULT_STATE.NONE]
+CheckItemWidget::~CheckItemWidget()
+{
+    delete ui;
+}
 
-    def __init__(self, name: str, source: str, expectation: str, result: str):
-        self.name = name
-        self.source_file_name = source
-        self.expectation_file_name = expectation
-        self.resultFileName = result
-        self.state = TEST_RESULT_STATE.NONE
+void CheckItemWidget::setState(ArduinoPlugin::CheckItemStates state){
+    switch(state){
+        case ArduinoPlugin::Error:
+            drawCircle(Qt::red);
+            return;
+        case ArduinoPlugin::Success:
+            drawCircle(Qt::green);
+            return;
+        case ArduinoPlugin::Warning:
+            drawCircle(Qt::yellow);
+            return;
+    }
+}
 
-    def __str__(self):
-        self.__setup_output()
-        additional_test_data = f'''
-        Test group expectations: {self.expectation_file_name}
-        Test group results: {self.resultFileName}. 
-        To get more detail info about comparison results, print:
-        vimdiff {self.source_file_name} {self.expectation_file_name}
-         {self.resultFileName}
-        or vimdiff {self.expectation_file_name} {self.resultFileName}
-        {CONSOLE_BG_COLORS.ENDC}
-        '''
-        return f'''{self.__text_color}
-        Test {self.name}.
-        {self.__header_text}
-        Sources for the test: {self.source_file_name}
-        {additional_test_data if self.state is TEST_RESULT_STATE.COMPLETED
-         or self.state is TEST_RESULT_STATE.FAILED else ""}
-        '''
+void CheckItemWidget::drawCircle(Qt::GlobalColor color) {
+    QPixmap pm(20, 20);
+    pm.fill();
 
-    def __setup_output(self):
-        if self.state == TEST_RESULT_STATE.COMPLETED:
-            self.__text_color = CONSOLE_BG_COLORS.OKGREEN
-            self.__header_text = "Congratulations! Test completed successfully!"
-        elif self.state == TEST_RESULT_STATE.MISSING_EXPECTATION:
-            self.__text_color = CONSOLE_BG_COLORS.OKCYAN
-            self.__header_text = "Oh! Test didn't complete: no expectation"
-        elif self.state == TEST_RESULT_STATE.COMPILER_ERROR_HAPPEND:
-            self.__text_color = CONSOLE_BG_COLORS.WARNING
-            self.__header_text = "Oh! Test didn't complete: compiler error"
-        elif self.state == TEST_RESULT_STATE.FAILED:
-            self.__text_color = CONSOLE_BG_COLORS.FAIL
-            self.__header_text = "Sorry, but test failed..."
+    QPainter p(&pm);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    QPen pen(color, 2);
+    p.setPen(pen);
+    QBrush brush(color);
+    p.setBrush(brush);
+    p.drawEllipse(3, 3, 15, 15);
 
-class TestSection:
+    this->ui->statusImage->setPixmap(pm);
+}
 
-    def __init__(self, section_name) -> None:
-        self.name = section_name
-        self.test_results = []
-    
-    def __str__(self) -> str:
-        columns, _ = os.get_terminal_size()
-        if (len(self.test_results) > 0):
-            return f"""
-            {CONSOLE_BG_COLORS.WARNING + "-" *columns + CONSOLE_BG_COLORS.ENDC}
-            Test section {self.name} starts here:
-            {os.linesep.join(list(map(lambda test_result: str(test_result),
-             self.test_results)))}
-            End of {self.name} section tests
-            {CONSOLE_BG_COLORS.WARNING + "-" *columns + CONSOLE_BG_COLORS.ENDC}
-            """
-        
-        return ''
+#ifndef CHECK_ITEM_H
+#define CHECK_ITEM_H
 
-#functions
-def remove_control_characters(data_array):
-    result = []
-    for i in data_array:
-        for cc in CONTROL_CHARACTERS:
-            i = i.replace(cc, "")
+#include <QWidget>
+#include "check_item_states.h"
 
-        if i:
-            result.append(i)
+namespace Ui {
+class check_item;
+}
 
-    return result
+class CheckItemWidget : public QWidget
+{
+    Q_OBJECT
 
-def get_file_data(filename):
-    if not os.path.exists(filename):
-        return ''
-    file = open(filename, "r")
-    result = file.readlines()
-    file.close()
-    return result
+public:
+    explicit CheckItemWidget(QWidget *parent = nullptr);
+    ~CheckItemWidget();
 
-def has_errors(text):
-    return COMPILER_ERROR_LABEL in text
+    void setState(ArduinoPlugin::CheckItemStates state);
+    void setLabelText(QString labelText);
 
-def process_sources(source_filename, path_to_translator):
-    path, _ = os.path.splitext(source_filename)
-    result_filename = path + ".kumir.c"
+private:
+    Ui::check_item *ui;
 
-    #call kumir2-arduino with params: 
-    --out="path_to_cwd/results/test_name.kumir.c" -s ./test_name.kum
-    popen = subprocess.Popen([path_to_translator,
-                              f'--out={result_filename}',
-                              '-s',
-                              source_filename],
-                             stdout=subprocess.PIPE)
-    popen.wait()
-    popen.stdout.read()
+    void drawCircle(Qt::GlobalColor color);
+};
 
-    return result_filename
+#endif // CHECK_ITEM_H
 
-def compare_data(expected_data, processed_data) -> TEST_RESULT_STATE:
-    result_without_kumir_ref = remove_control_characters(processed_data[2:])
-    expected_data = remove_control_characters(expected_data)
+#ifndef CHECK_ITEM_STATES_H
+#define CHECK_ITEM_STATES_H
+namespace ArduinoPlugin{
+    enum CheckItemStates {
+        Warning,
+        Error,
+        Success
+    };
+}
+#endif // CHECK_ITEM_STATES_H
 
-    if (has_errors(result_without_kumir_ref)):
-        return TEST_RESULT_STATE.COMPILER_ERROR_HAPPEND
+#ifndef CHECK_STEPS_H
+#define CHECK_STEPS_H
+namespace ArduinoPlugin {
+    enum ArduinoPluginCheckState {
+        InstallationCheck,
+        AvailabilityCheck,
+        CliUnavailable,
+        SearchForBoads,
+        NoBoardsFound,
+        AnyBoardsFound,
+        CheckCompleted
+    };
+}
+#endif // CHECK_STEPS_H
 
-    for i in range(len(result_without_kumir_ref)):
-        if result_without_kumir_ref[i] != expected_data[i]:
-            return TEST_RESULT_STATE.FAILED
+#include "checkarduinoplugininitialization.h"
+#include "ui_checkarduinoplugininitialization.h"
+#include "constants.h"
 
-    return TEST_RESULT_STATE.COMPLETED
+CheckArduinoPluginInitialization::CheckArduinoPluginInitialization
+(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::CheckArduinoPluginInitialization)
+{
+    ui->setupUi(this);
 
-def get_test_result_type_counters(test_sections):
-    counters = {
-        TEST_RESULT_STATE.COMPLETED: 0,
-        TEST_RESULT_STATE.FAILED: 0,
-        TEST_RESULT_STATE.COMPILER_ERROR_HAPPEND: 0,
-        TEST_RESULT_STATE.MISSING_EXPECTATION: 0,
+    ui->arduinoCliInstallation->setLabelText("Проверка установки arduino-cli...");
+    ui->arduinoCliAvailability->setLabelText("Проверка доступности arduino-cli...");
+    ui->boardsConnectivity->setLabelText("Поиск подключенных плат...");
+    this->setPalette(QPalette(Qt::white));
+    initCheck();
+}
+
+void CheckArduinoPluginInitialization::initCheck(){
+    ui->arduinoCliInstallation->setState(ArduinoPlugin::Error);
+    ui->arduinoCliAvailability->setState(ArduinoPlugin::Success);
+    ui->boardsConnectivity->setState(ArduinoPlugin::Warning);
+}
+
+ArduinoPluginCheckState CheckArduinoPluginInitialization::changeState
+(ArduinoPluginCheckState currentState){
+
+}
+
+CheckArduinoPluginInitialization::~CheckArduinoPluginInitialization()
+{
+    delete ui;
+}
+
+#ifndef CHECKARDUINOPLUGININITIALIZATION_H
+#define CHECKARDUINOPLUGININITIALIZATION_H
+
+#include <QDialog>
+#include <QVBoxLayout>
+
+#include "check_steps.h"
+#include "check_item.h"
+using ArduinoPlugin::ArduinoPluginCheckState;
+
+namespace Ui {
+class CheckArduinoPluginInitialization;
+}
+
+class CheckArduinoPluginInitialization : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit CheckArduinoPluginInitialization(QWidget *parent = nullptr);
+    ~CheckArduinoPluginInitialization();
+
+private:
+    Ui::CheckArduinoPluginInitialization *ui;
+
+    void initCheck();
+    ArduinoPluginCheckState changeState(ArduinoPluginCheckState currentState);
+};
+
+#endif // CHECKARDUINOPLUGININITIALIZATION_H
+
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+#include <QString>
+
+#define CHECK_ARDUINOCLI_INSTALLATION (QString("Проверка установки arduino-cli..."))
+#define CHECK_ARDUINOCLI_AVAILABILITY (QString
+("Проверка доступности arduino-cli..."))
+#define SEARCH_FOR_CONNECTED_DOARDS (QString("Поиск подключенных плат..."))
+#endif // CONSTANTS_H
+
+#include "mainwindow.h"
+
+#include <QApplication>
+#include <QProcess>
+#include <QDebug>
+
+void readTest() {
+    QProcess process;
+//    process.start("type", QStringList{"whereis"});
+    process.startDetached( "/home/linuxbrew/.linuxbrew/bin/arduino-cli" );
+//    process.start("find /home -type f -name file-to-search");
+    if( !process.waitForStarted() || !process.waitForFinished() ) {
+        return;
     }
 
-    for test_section in test_sections:
-        for test_result in test_section.test_results:
-            counters[test_result.state] += 1
+    qDebug() << process.readAllStandardError();
+    qDebug() << process.readAllStandardOutput();
+}
+
+void qprocTest(QApplication a){
+    auto proc = new QProcess(a.instance());
+
+    auto stdOutReadyCallBack = [&proc](){
+        auto output = QString(proc->readAllStandardOutput());
+        qDebug() << output;
+
+        proc->close();
+        delete proc;
+    };
+
+    auto errorOccuredCallback = [&proc](QProcess::ProcessError error){
+        switch (error) {
+        case QProcess::FailedToStart:
+            qDebug() << "The process failed to start.";
+            break;
+        case QProcess::Crashed:
+            qDebug() <<
+ "The process crashed some time after starting successfully.";
+            break;
+        case QProcess::Timedout:
+            qDebug() << "The last waitFor...() function timed out";
+            break;
+        case QProcess::WriteError:
+            qDebug() <<
+ "An error occurred when attempting to write to the process.";
+            break;
+        case QProcess::ReadError:
+            qDebug() << 
+"An error occurred when attempting to read from the process.";
+            break;
+        case QProcess::UnknownError:
+            qDebug() << "An unknown error occurred. ";
+            break;
+        default:
+            break;
+        }
+    };
+
+    auto stateChangedCallback = [&proc](QProcess::ProcessState state){
+        switch (state) {
+        case QProcess::NotRunning:
+            qDebug() << "The process is not running.";
+            break;
+        case QProcess::Starting:
+            qDebug() << "The process is starting, but the program has not 
+yet been invoked.";
+            break;
+        case QProcess::Running:
+            qDebug() << "The process is running and is ready for 
+reading and writing.";
+            break;
+        default:
+            break;
+        }
+
+        proc->close();
+    };
+    QObject::connect(proc,
+                     &QProcess::readyReadStandardOutput,
+                     a.instance(),
+                     stdOutReadyCallBack);
+
+    QObject::connect(proc,
+                     &QProcess::errorOccurred,
+                     a.instance(),
+                     errorOccuredCallback);
+
+    QObject::connect(proc,
+                     &QProcess::stateChanged,
+                     a.instance(),
+                     stateChangedCallback);
+
+    proc->open(QProcess::ReadOnly);
+    proc->setProgram("sh");
+    proc->setArguments(QStringList{"-c", "arduino-cli"});
+//    proc->startDetached();
+    proc->startDetached("/bin/bash", 
+QStringList{"-c", "whereis arduino-cli", "\n"});
+    proc->waitForStarted();
+    proc->waitForFinished();
+
+    proc->close();
+}
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+
+//    readTest();
+
+    w.show();
+    return a.exec();
+}
+
+#include "mainwindow.h"
+#include "./ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    m_plugin_dialog = new CheckArduinoPluginInitialization(this);
+    m_plugin_dialog->show();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+    delete m_plugin_dialog;
+}
+
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+#include "checkarduinoplugininitialization.h"
+
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
+private:
+    Ui::MainWindow *ui;
+
+    CheckArduinoPluginInitialization *m_plugin_dialog;
+};
+#endif // MAINWINDOW_H
 
 
-    return counters
-
-#log comparison results to file
-def log_test_results(logs_filename, data_to_log: TestSection, log_to_console):
-    result_type_counters = get_test_result_type_counters(data_to_log)
-    completed_tests_count, failed_tests_count,
-     compiler_error_happend_tests_count, 
-     missing_expectations_tests_count = \
-    [result_type_counters[k] for k in result_type_counters]
-
-    log_data = []
-    for test_section in data_to_log:
-        test_section.test_results = list(filter
-        (lambda test_result: test_result.state not in 
-        TestResult.SKIPPED_TEST_TYPES, test_section.test_results))
-        log_data.append(test_section)
-
-    log_data_strings = list(map(lambda x: str(x), log_data))
-    log_data_strings.insert(0, f'''
-    There were found: {len(log_data)} tests.
-    {CONSOLE_BG_COLORS.OKGREEN} Completed: 
-    {completed_tests_count} {CONSOLE_BG_COLORS.ENDC}
-    {CONSOLE_BG_COLORS.FAIL} Failed: 
-    {failed_tests_count} {CONSOLE_BG_COLORS.ENDC}
-    {CONSOLE_BG_COLORS.WARNING} With compiler error happend:
-     {compiler_error_happend_tests_count} {CONSOLE_BG_COLORS.ENDC}
-    {CONSOLE_BG_COLORS.OKCYAN} Missed expectation file: 
-    {missing_expectations_tests_count} {CONSOLE_BG_COLORS.ENDC}''')
-
-    if not os.path.exists(logs_filename):
-        open(logs_filename, "a").close()
-
-    log_file = open(logs_filename, "a")
-    log_file.writelines(log_data_strings)
-    log_file.close()
-
-    if log_to_console:
-        print(f"{os.linesep}".join(log_data_strings))
-
-def is_binary_file(filename):
-    file_stream = open(filename, 'rb')
-    file_content = file_stream.read(BYTES_TO_READ_COUNT)
-    file_stream.close()
-    
-    if not len(file_content):
-        #file is empty, nothing to read
-        return False
-    
-    if ord(BINARY_CHAR_EXAMPLE) in file_content:
-        #file contains binary symbols
-        return True
-    
-    binary_chars = file_content.translate(TEXT_CHARACTERS)
-    return float(len(binary_chars)) / len(file_content) > CHAR_THRESHOLD
-
-def validate_file_name(filename: str, is_log_file: bool):   
-    if not os.path.exists(filename):
-        print(filename + ERRORS.get("file not exist"))
-        sys.exit(2)
-    if not os.path.isfile(filename):
-        print(ERRORS.get("wrong input"))
-        sys.exit(2)
-    if not is_log_file and not is_binary_file(filename):
-        print(ERRORS.get("wrong file extention"))
-        sys.exit(2)
-        
-def show_help():
-    print(""" kumir2-arduino tester.
-    Description:
-    Approach of this app is to debug the work of kumir2 
-    to arduino translator. It uses compiled translator's 
-    instance, pre-builded locally on PC.
-    To start the work you should input path to compiler 
-    and path to logs file.
-    Flags:
-    [-h] [--help] - show help.
-    
-    [-tr] [--translator] ["the path to pre-builded kumir2 
-    to arduino translator instance"] - show app what 
-    translator instance to use.
-    
-    [-t] [--path-to-tests] ["the path to tests folder"] = 
-    show app  the folder with test files.
-    
-    [-o] [--output] ["the path to log file"] - show app 
-    where to store test logs.
-    
-    [-d] [--duplicate] - duplicate output to console.
-
-    [-ss] [--skip-successfull] - skip open log info about 
-    succesfully completed tests.
-
-    [-sf] [--skip-failed] - skip open log info about failed tests.
-
-    [-swe] [--skip-without-expectation] - skip open log info 
-    about tests for which the file with expectations 
-    was not found.
-
-    [-sce] [--skip-with-compiler-error] - skip open log info 
-    about tests ended with compiler error.
-
-    [-b] [--brief] - skip open log info about all tests.
-    """)
-
-def process_args():
-    result = ["", "", False, ""]
-    if ARGS["help"][0] in sys.argv or ARGS["help"][1] 
-    in sys.argv:
-        show_help()
-        sys.exit(2)
-
-    if ARGS["skip-successfull"][0] in sys.argv or ARGS["
-    skip-successfull"][1] in sys.argv: 
-        TestResult.SKIPPED_TEST_TYPES.append(
-        TEST_RESULT_STATE.COMPLETED)
-    
-    if ARGS["skip-without-expectation"][0] in sys.argv 
-    or ARGS["skip-without-expectation"][1] in sys.argv: 
-        TestResult.SKIPPED_TEST_TYPES.append(TEST_RESULT_STATE
-        .MISSING_EXPECTATION)
-
-    if ARGS["skip-with-compiler-error"][0] in sys.argv or
-     ARGS["skip-with-compiler-error"][1] in sys.argv: 
-        TestResult.SKIPPED_TEST_TYPES.append(TEST_RESULT
-        _STATE.COMPILER_ERROR_HAPPEND)
-
-    if ARGS["skip-failed"][0] in sys.argv or ARGS[
-    "skip-failed"][1] in sys.argv: 
-        TestResult.SKIPPED_TEST_TYPES.append(
-        TEST_RESULT_STATE.FAILED)
-
-    if ARGS["brief"][0] in sys.argv or ARGS["brief"][1] in sys.argv: 
-        TestResult.SKIPPED_TEST_TYPES = [
-            TEST_RESULT_STATE.COMPILER_ERROR_HAPPEND, 
-            TEST_RESULT_STATE.COMPLETED, 
-            TEST_RESULT_STATE.FAILED,
-            TEST_RESULT_STATE.MISSING_EXPECTATION
-            ]
-
-    args = sys.argv[1:]
-    for i in range(1, len(args)):
-        if args[i - 1] in ARGS["translator"] or args[i - 1]
-         in ARGS["output"] or args[i - 1] in ARGS
-         ["path-to-tests"]:
-            if (os.path.isfile(args[i])):
-                validate_file_name(args[i], False if args[i - 1]
-                 in ARGS["translator"] else True)
-
-            if args[i - 1] in ARGS["translator"]:
-                result[0] = os.path.abspath(args[i])
-            elif args[i - 1] in ARGS["output"]: 
-                result[1] = os.path.abspath(args[i])
-            elif args[i - 1] in ARGS["path-to-tests"]:
-                result[3] = os.path.abspath(args[i])
-        elif args[i-1] in ARGS["duplicate"]:              
-            result[2] = True
-            
-    return result
-
-def get_files_with_absolute_paths(folder_name):
-    path_to_folder = os.path.join(os.getcwd(), folder_name)
-    files = 
-    list(map(lambda x: os.path.join(path_to_folder, x),
-     os.listdir(path=path_to_folder)))
-    files.sort()
-
-    return files
-
-def get_source_and_expectation(dir_files):
-    sources = []
-    expectations = []
-    for file in dir_files:
-        if (os.path.isfile(file)):
-            ext = os.path.splitext(file)[1]
-            if (ext == EXPECTATION_FILE_EXTENTION):
-                expectations.append(file)
-            elif (ext == SOURCE_FILE_EXTENTION):
-                sources.append(file)
-    
-    return [sources, expectations]
-
-def get_folder_contents_full_paths(path_to_folder):
-    return list(
-        map(
-            lambda x: os.path.join(os.sep, path_to_folder, x),
-            os.listdir(path_to_folder)
-            )
-        )
-
-def calculate_test_sections(path_to_tests_folder):
-    result = []
-    test_folder_paths = get_folder_contents_full
-    _paths(path_to_tests_folder)
-    for test_folder_path in test_folder_paths:
-        if os.path.isfile(test_folder_path):
-            continue
-
-        result.append(TestSection(test_folder_path.
-        split(os.sep)[-1]))
-        test_paths = get_folder_contents_full_paths
-        (test_folder_path)
-        for test_dir_path in test_paths:
-            source_files, expectation_files =
-          get_source_and_expectation(get_folder_contents_full_paths
-            (test_dir_path))
-            if os.path.isfile(test_dir_path) or len
-            (expectation_files) > 1 or len(source_files)
-             < 1:
-                continue
-            
-            result[-1].test_results.append(TestResult(
-                test_dir_path.split(os.sep)[-1],
-                source_files[0],
-                "", ""
-                )
-            )
-
-            if len(expectation_files) == 1:
-                result[-1].test_results[-1]
-         .expectation_file_name  = expectation_files[0]
-                result[-1].test_results[-1].resultFileName
-                 = process_sources(source_files[0],
-                  args_data[0])
-                result_data = get_file_data(result[-1]
-               
-                .test_results[-1].resultFileName)
-                expected_data =
-     get_file_data(result[-1].test_results[-1].expectation_file_name)
-                result[-1].test_results[-1].state 
-                = compare_data(expected_data, result_data)
-            else: 
-                result[-1].test_results[-1].state = 
-                TEST_RESULT_STATE.MISSING_EXPECTATION
-
-    return result
-
-if __name__=="__main__":
-    args_data = process_args()
-
-    if not args_data[3]:
-        print("Didn't find any test to execute. Shutting down.")       
-        sys.exit()
-
-    test_results = calculate_test_sections(args_data[3])
-
-    log_test_results(args_data[1], test_results, args_data[2])
 \end{Verbatim}
 \end{document}
